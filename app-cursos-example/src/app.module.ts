@@ -8,7 +8,8 @@ import { AwardsModule } from './awards/awards.module';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { ApplicationConfig } from '@nestjs/core';
+import { MongooseModule } from '@nestjs/mongoose';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -18,12 +19,13 @@ import { ApplicationConfig } from '@nestjs/core';
       rootPath: join(__dirname, '..', 'public'),
       renderPath: '/',
     }),
+    MongooseModule.forRoot(process.env.DB_URI!),
     CoursesModule,
     AuthModule,
     VideosModule,
     AwardsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ApplicationConfig],
+  providers: [AppService], // ✅ Solo AppService
 })
 export class AppModule {}
